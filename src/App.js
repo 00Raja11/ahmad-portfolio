@@ -90,8 +90,8 @@ const data = {
         { label: "Design", value: "Mobile-First" },
         { label: "UI", value: "Interactive" },
       ],
-      github: "https://github.com/00Raja11/portfolio",
-      demo: "https://ahmadrajakhan.vercel.app",
+      github: "https://github.com/00Raja11/ahmad-portfolio",
+      demo: "https://ahmad-portfolio-psi.vercel.app/",
     },
   ],
   achievements: [
