@@ -71,7 +71,7 @@ const data = {
         { label: "APIs", value: "REST" },
         { label: "Design", value: "Responsive" },
       ],
-      github: "https://github.com/00Raja11/agriculture-platform",
+      github: "https://github.com/00Raja11/agri",
       demo: "https://agriculture-platform.vercel.app",
     },
     {
