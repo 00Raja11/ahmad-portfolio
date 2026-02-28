@@ -4,7 +4,7 @@ A modern, responsive portfolio website built with React for Ahmad Raja Khan, a F
 
 ## 🚀 Live Demo
 
-[View Live Portfolio](https://ahmadrajakhan.vercel.app)
+[View Live Portfolio](https://ahmad-portfolio-psi.vercel.app/)
 
 ## 📋 Features
 
