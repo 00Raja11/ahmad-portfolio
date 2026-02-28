@@ -52,7 +52,7 @@ ahmad-portfolio/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/00Raja11/portfolio.git
+   git clone https://github.com/00Raja11/ahmad-portfolio.git
    cd ahmad-portfolio
    ```
 
