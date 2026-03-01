@@ -52,7 +52,7 @@ const data = {
         { label: "Citation Accuracy", value: "94%" },
         { label: "Avg Response", value: "3.2s" },
       ],
-      github: "https://github.com/00Raja11/rag-law-assistant",
+      github: "https://github.com/00Raja11/Rag_legal_chatbot",
       demo: "https://rag-law-assistant.vercel.app",
     },
     {
