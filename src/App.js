@@ -72,7 +72,7 @@ const data = {
         { label: "Design", value: "Responsive" },
       ],
       github: "https://github.com/00Raja11/agri",
-      demo: "https://agriculture-platform.vercel.app",
+      demo: "https://agri-1-k5tzslroe-ahmad-raja-khans-projects-58cf73bf.vercel.app/",
     },
     {
       title: "Personal Portfolio Website",
