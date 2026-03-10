@@ -53,7 +53,7 @@ const data = {
         { label: "Avg Response", value: "3.2s" },
       ],
       github: "https://github.com/00Raja11/Rag_legal_chatbot",
-      demo: "https://rag-law-assistant.vercel.app",
+      demo: "https://raglegalchatbot-27ryarodkseun3crryjyyt.streamlit.app/",
     },
     {
       title: "Agriculture Assistance Platform",
