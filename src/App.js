@@ -18,7 +18,7 @@ const data = {
     degree: "B.Tech in Computer Science & Engineering",
     period: "2022 – 2026",
     institute: "NIMS University, Jaipur, Rajasthan",
-    sgpa: "7.40",
+    sgpa: "7.60",
     coursework: [
       "Data Structures & Algorithms",
       "Object Oriented Programming",
