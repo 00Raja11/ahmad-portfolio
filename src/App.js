@@ -27,6 +27,23 @@ const data = {
       "Design & Analysis of Algorithms",
     ],
   },
+  // NEW: Internship Experience
+  experience: [
+    {
+      title: "Frontend Developer Intern",
+      period: "01/2026 – Present",
+      company: "VetityNova Business Solution",
+      location: "Delhi",
+      stack: "React.js, Node.js, Express.js, MongoDB",
+      description: [
+        "Develop responsive and interactive user interfaces using React.js for production web applications.",
+        "Collaborate with backend developers integrating APIs built with Node.js and Express.js.",
+        "Debug issues, optimize performance, and maintain clean reusable code using Git workflows.",
+      ],
+      color: "#6C8B9E",
+      icon: "💼",
+    },
+  ],
   skills: {
     "Languages": ["Python", "Java", "JavaScript", "HTML", "CSS"],
     "Frameworks & Libraries": ["React", "Node.js", "Flask", "TailwindCSS", "Streamlit", "LangChain"],
@@ -103,7 +120,7 @@ const data = {
   ],
 };
 
-const NAV_LINKS = ["About", "Skills", "Projects", "Achievements", "Contact"];
+const NAV_LINKS = ["About", "Experience", "Skills", "Projects", "Achievements", "Contact"];
 
 function useScrollSpy() {
   const [active, setActive] = useState("About");
@@ -334,6 +351,52 @@ export default function Portfolio() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* EXPERIENCE SECTION - NEW */}
+      <section id="experience" style={{ background: "#F8F5F0", padding: "80px 24px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <span className="section-label">Experience</span>
+          <div className="divider" />
+          <h2 className="serif" style={{ fontSize: 42, fontWeight: 600, marginBottom: 40 }}>Professional<br />Experience</h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            {data.experience.map((exp, index) => (
+              <div key={exp.title} className="card" style={{ padding: 32, borderLeft: `4px solid ${exp.color}` }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 20, alignItems: "start" }}>
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
+                      <span style={{ fontSize: 28 }}>{exp.icon}</span>
+                      <div>
+                        <span className="sans" style={{ fontSize: 11, color: "#9C8878", textTransform: "uppercase", letterSpacing: "1px" }}>
+                          {exp.period}
+                        </span>
+                        <h3 className="serif" style={{ fontSize: 24, fontWeight: 600, lineHeight: 1.2 }}>
+                          {exp.title}
+                        </h3>
+                      </div>
+                    </div>
+                    <p className="sans" style={{ fontSize: 16, color: exp.color, fontWeight: 600, marginBottom: 4 }}>
+                      {exp.company}
+                    </p>
+                    <p className="sans" style={{ fontSize: 13, color: "#9C8878", marginBottom: 16 }}>
+                      📍 {exp.location}
+                    </p>
+                    <p className="sans" style={{ fontSize: 12, color: "#6B5E52", fontWeight: 500, letterSpacing: "0.5px", marginBottom: 14 }}>
+                      Stack: {exp.stack}
+                    </p>
+                    <ul style={{ paddingLeft: 0, listStyle: "none" }}>
+                      {exp.description.map((item) => (
+                        <li key={item} className="sans" style={{ fontSize: 14, color: "#5C4F42", lineHeight: 1.7, marginBottom: 6, display: "flex", gap: 10, alignItems: "flex-start" }}>
+                          <span style={{ color: exp.color, marginTop: 6, flexShrink: 0 }}>▸</span>{item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
