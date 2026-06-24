@@ -122,7 +122,7 @@ const data = {
 
 const NAV_LINKS = ["About", "Experience", "Skills", "Projects", "Achievements", "Contact"];
 
-// Comprehensive SVG Icons
+// SVG Icons
 const Icons = {
   // Contact Icons
   Email: () => (
@@ -251,7 +251,6 @@ const Icons = {
     </svg>
   ),
   
-  // Additional Icons
   PaintPalette: () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10"/>
@@ -264,7 +263,7 @@ const Icons = {
   ),
 };
 
-// Color themes for the color changer
+// Color themes
 const COLOR_THEMES = [
   { name: "Warm Brown", primary: "#8C6D4F", secondary: "#C8A97E", bg: "#F5F2EE", accent: "#6B4F3A" },
   { name: "Ocean Blue", primary: "#4A7B9D", secondary: "#7EA9C8", bg: "#EEF2F5", accent: "#2C5A7A" },
@@ -300,7 +299,6 @@ function PopupModal({ isOpen, onClose, title, message, type = "info" }) {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      animation: 'fadeIn 0.3s ease',
     }} onClick={onClose}>
       <div style={{
         backgroundColor: '#FEFCFA',
@@ -309,18 +307,10 @@ function PopupModal({ isOpen, onClose, title, message, type = "info" }) {
         maxWidth: '440px',
         width: '90%',
         boxShadow: '0 24px 64px rgba(0,0,0,0.2)',
-        transform: 'scale(1)',
-        animation: 'scaleIn 0.3s ease',
-        position: 'relative',
         textAlign: 'center',
+        animation: 'scaleIn 0.3s ease',
       }} onClick={e => e.stopPropagation()}>
-        <div style={{
-          fontSize: '48px',
-          marginBottom: '16px',
-          display: 'block',
-        }}>
-          {getIcon()}
-        </div>
+        <div style={{ fontSize: '48px', marginBottom: '16px' }}>{getIcon()}</div>
         <h3 style={{
           fontFamily: "'Cormorant Garamond', serif",
           fontSize: '28px',
@@ -345,18 +335,11 @@ function PopupModal({ isOpen, onClose, title, message, type = "info" }) {
           fontSize: '14px',
           cursor: 'pointer',
           fontWeight: 500,
-          transition: 'all 0.3s ease',
-        }}
-        onMouseOver={e => e.target.style.transform = 'scale(1.05)'}
-        onMouseOut={e => e.target.style.transform = 'scale(1)'}>
+        }}>
           Close
         </button>
       </div>
       <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
         @keyframes scaleIn {
           from { transform: scale(0.8); opacity: 0; }
           to { transform: scale(1); opacity: 1; }
@@ -406,7 +389,7 @@ function AnimatedCounter({ value }) {
   return <span ref={ref}>{isNaN(numeric) ? value : count + value.replace(/[0-9]/g, "")}</span>;
 }
 
-// Enhanced Animated Background Component
+// Enhanced Animated Background
 function AnimatedBackground({ colorTheme }) {
   const canvasRef = useRef(null);
 
@@ -423,14 +406,25 @@ function AnimatedBackground({ colorTheme }) {
       canvas.height = window.innerHeight;
     };
 
+    function hexToRgba(hex, opacity) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      if (result) {
+        const r = parseInt(result[1], 16);
+        const g = parseInt(result[2], 16);
+        const b = parseInt(result[3], 16);
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+      }
+      return `rgba(140, 109, 79, ${opacity})`;
+    }
+
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.size = Math.random() * 3 + 1;
-        this.speedX = (Math.random() - 0.5) * 0.8;
-        this.speedY = (Math.random() - 0.5) * 0.8;
-        this.opacity = Math.random() * 0.6 + 0.2;
+        this.speedX = (Math.random() - 0.5) * 0.6;
+        this.speedY = (Math.random() - 0.5) * 0.6;
+        this.opacity = Math.random() * 0.5 + 0.2;
         this.pulse = Math.random() * Math.PI * 2;
         this.pulseSpeed = Math.random() * 0.02 + 0.01;
       }
@@ -440,14 +434,13 @@ function AnimatedBackground({ colorTheme }) {
         this.y += this.speedY;
         this.pulse += this.pulseSpeed;
 
-        // Mouse interaction
         const dx = this.x - mouseX;
         const dy = this.y - mouseY;
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < 150) {
           const force = (150 - distance) / 150;
-          this.x += (dx / distance) * force * 0.5;
-          this.y += (dy / distance) * force * 0.5;
+          this.x += (dx / distance) * force * 0.3;
+          this.y += (dy / distance) * force * 0.3;
         }
 
         if (this.x > canvas.width) this.x = 0;
@@ -460,32 +453,15 @@ function AnimatedBackground({ colorTheme }) {
         const pulseOpacity = this.opacity * (0.7 + 0.3 * Math.sin(this.pulse));
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        
-        // Use color theme for particles
-        const color = colorTheme || "#8C6D4F";
-        ctx.fillStyle = color.replace(')', `, ${pulseOpacity})`).replace('rgb', 'rgba');
-        if (!color.includes('rgb')) {
-          ctx.fillStyle = hexToRgba(color, pulseOpacity);
-        }
+        ctx.fillStyle = hexToRgba(colorTheme || "#8C6D4F", pulseOpacity);
         ctx.fill();
       }
     }
 
-    function hexToRgba(hex, opacity) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      if (result) {
-        const r = parseInt(result[1], 16);
-        const g = parseInt(result[2], 16);
-        const b = parseInt(result[3], 16);
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-      }
-      return `rgba(140, 109, 79, ${opacity})`;
-    }
-
     const initParticles = () => {
-      const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 12000));
+      const count = Math.min(80, Math.floor((canvas.width * canvas.height) / 15000));
       particles = [];
-      for (let i = 0; i < particleCount; i++) {
+      for (let i = 0; i < count; i++) {
         particles.push(new Particle());
       }
     };
@@ -496,12 +472,10 @@ function AnimatedBackground({ colorTheme }) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 180) {
-            const opacity = 0.15 * (1 - distance / 180);
-            const color = colorTheme || "#8C6D4F";
+          if (distance < 150) {
+            const opacity = 0.12 * (1 - distance / 150);
             ctx.beginPath();
-            ctx.strokeStyle = hexToRgba(color, opacity);
+            ctx.strokeStyle = hexToRgba(colorTheme || "#8C6D4F", opacity);
             ctx.lineWidth = 0.5;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -511,44 +485,36 @@ function AnimatedBackground({ colorTheme }) {
       }
     };
 
-    // Create gradient circles
-    const drawGradientCircles = () => {
+    const drawGradients = () => {
       const time = Date.now() * 0.0001;
-      const color = colorTheme || "#8C6D4F";
-      
-      for (let i = 0; i < 3; i++) {
-        const x = canvas.width * (0.2 + 0.6 * Math.sin(time + i * 2));
-        const y = canvas.height * (0.2 + 0.6 * Math.cos(time * 0.7 + i * 1.5));
+      const positions = [
+        { x: 0.2, y: 0.2, speed: 1 },
+        { x: 0.8, y: 0.8, speed: 0.7 },
+        { x: 0.5, y: 0.3, speed: 1.3 },
+      ];
+
+      positions.forEach((pos, i) => {
+        const x = canvas.width * (pos.x + 0.15 * Math.sin(time * pos.speed + i * 2));
+        const y = canvas.height * (pos.y + 0.15 * Math.cos(time * pos.speed * 0.7 + i * 1.5));
         const radius = 150 + 50 * Math.sin(time * 0.5 + i);
-        
+
         const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-        const baseColor = hexToRgba(color, 0);
-        const midColor = hexToRgba(color, 0.03);
-        const endColor = hexToRgba(color, 0);
-        
-        gradient.addColorStop(0, midColor);
-        gradient.addColorStop(0.5, midColor);
-        gradient.addColorStop(1, endColor);
+        gradient.addColorStop(0, hexToRgba(colorTheme || "#8C6D4F", 0.04));
+        gradient.addColorStop(0.5, hexToRgba(colorTheme || "#8C6D4F", 0.02));
+        gradient.addColorStop(1, hexToRgba(colorTheme || "#8C6D4F", 0));
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, Math.PI * 2);
         ctx.fill();
-      }
+      });
     };
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      drawGradientCircles();
-      
-      particles.forEach(particle => {
-        particle.update();
-        particle.draw();
-      });
-
+      drawGradients();
+      particles.forEach(p => { p.update(); p.draw(); });
       connectParticles();
-      
       animationFrameId = requestAnimationFrame(animate);
     };
 
@@ -592,7 +558,6 @@ function AnimatedBackground({ colorTheme }) {
         height: '100%',
         zIndex: 0,
         pointerEvents: 'none',
-        background: 'transparent',
       }}
     />
   );
@@ -617,16 +582,16 @@ export default function Portfolio() {
     setMenuOpen(false);
   };
 
-  const handleResumeDownload = () => {
-    window.open(data.contact.resume, '_blank');
-    showPopup("Resume", "Opening your resume in a new tab...", "success");
-  };
-
   const showPopup = (title, message, type = "info") => {
     setModalTitle(title);
     setModalMessage(message);
     setModalType(type);
     setModalOpen(true);
+  };
+
+  const handleResumeDownload = () => {
+    window.open(data.contact.resume, '_blank');
+    showPopup("Resume", "Opening your resume in a new tab...", "success");
   };
 
   const handleButtonClick = (action, name) => {
@@ -655,12 +620,6 @@ export default function Portfolio() {
     setCurrentTheme(nextTheme);
     const theme = COLOR_THEMES[nextTheme];
     showPopup("Theme Changed", `Switched to "${theme.name}" theme! 🎨`, "success");
-    
-    // Apply theme colors to CSS variables
-    document.documentElement.style.setProperty('--primary-color', theme.primary);
-    document.documentElement.style.setProperty('--secondary-color', theme.secondary);
-    document.documentElement.style.setProperty('--bg-color', theme.bg);
-    document.documentElement.style.setProperty('--accent-color', theme.accent);
   };
 
   const currentColorTheme = COLOR_THEMES[currentTheme];
@@ -675,7 +634,6 @@ export default function Portfolio() {
       overflow: 'hidden',
       transition: 'background 0.5s ease',
     }}>
-      {/* Popup Modal */}
       <PopupModal 
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -684,7 +642,6 @@ export default function Portfolio() {
         type={modalType}
       />
 
-      {/* Animated Background */}
       <AnimatedBackground colorTheme={currentColorTheme.primary} />
 
       <style>{`
@@ -713,13 +670,11 @@ export default function Portfolio() {
         .contact-item { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: #FEFCFA; border: 1px solid #E8E0D5; border-radius: 10px; margin-bottom: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; transition: all 0.3s ease; position: relative; z-index: 1; cursor: pointer; }
         .contact-item:hover { border-color: ${currentColorTheme.primary || "#8C6D4F"}; transform: translateX(6px); box-shadow: 0 4px 16px rgba(140,109,79,0.1); }
         .contact-item svg { color: ${currentColorTheme.primary || "#8C6D4F"}; }
-        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-        .fade-up { animation: fadeUp 0.6s ease both; }
         .theme-btn { 
           background: ${currentColorTheme.primary || "#8C6D4F"}; 
           color: #fff; 
           border: none; 
-          padding: 10px 18px; 
+          padding: 8px 16px; 
           border-radius: 50px; 
           cursor: pointer; 
           font-family: 'DM Sans', sans-serif;
@@ -727,31 +682,17 @@ export default function Portfolio() {
           font-weight: 500;
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
           transition: all 0.3s ease;
-          box-shadow: 0 2px 12px rgba(0,0,0,0.1);
         }
-        .theme-btn:hover {
-          transform: scale(1.05) rotate(-5deg);
-          box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-        .color-dot {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          display: inline-block;
-          border: 2px solid rgba(255,255,255,0.3);
-        }
+        .theme-btn:hover { transform: scale(1.05); }
+        .color-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; border: 2px solid rgba(255,255,255,0.3); }
         
         @media (max-width: 768px) {
-          .desktop-nav {
-            display: none !important;
-          }
-          .hamburger {
-            display: block !important;
-          }
+          .desktop-nav { display: none !important; }
+          .hamburger { display: block !important; }
           .theme-btn span { display: none; }
-          .theme-btn { padding: 8px 12px; }
+          .theme-btn { padding: 6px 10px; }
         }
       `}</style>
 
@@ -770,12 +711,7 @@ export default function Portfolio() {
           <div className="serif" style={{ fontSize: 22, fontWeight: 600, letterSpacing: "-0.5px", color: "#2C2A27", display: 'flex', alignItems: 'center', gap: 12 }}>
             A<span style={{ color: currentColorTheme.primary || "#8C6D4F" }}>.</span>R<span style={{ color: currentColorTheme.primary || "#8C6D4F" }}>.</span>K
             
-            {/* Color Theme Changer Button */}
-            <button 
-              onClick={changeTheme}
-              className="theme-btn"
-              title="Change Color Theme"
-            >
+            <button onClick={changeTheme} className="theme-btn" title="Change Color Theme">
               <Icons.PaintPalette />
               <span>Theme</span>
               <span className="color-dot" style={{ background: currentColorTheme.primary }}></span>
@@ -849,10 +785,9 @@ export default function Portfolio() {
                   fontWeight: 500, 
                   letterSpacing: "0.3px", 
                   transition: "all 0.3s ease",
-                  boxShadow: `0 4px 16px ${currentColorTheme.primary ? currentColorTheme.primary + '40' : 'rgba(44,42,39,0.2)'}`
                 }}
-                onMouseOver={e => { e.target.style.transform = "translateY(-3px) scale(1.02)"; e.target.style.boxShadow = `0 8px 24px ${currentColorTheme.primary ? currentColorTheme.primary + '60' : 'rgba(44,42,39,0.3)'}`; }} 
-                onMouseOut={e => { e.target.style.transform = "translateY(0) scale(1)"; e.target.style.boxShadow = `0 4px 16px ${currentColorTheme.primary ? currentColorTheme.primary + '40' : 'rgba(44,42,39,0.2)'}`; }}>
+                onMouseOver={e => e.target.style.transform = "translateY(-3px)"} 
+                onMouseOut={e => e.target.style.transform = "translateY(0)"}>
                 View Projects
               </button>
               <button 
@@ -869,8 +804,8 @@ export default function Portfolio() {
                   fontWeight: 500, 
                   transition: "all 0.3s ease" 
                 }}
-                onMouseOver={e => { e.target.style.borderColor = currentColorTheme.primary || "#8C6D4F"; e.target.style.transform = "translateY(-3px) scale(1.02)"; e.target.style.boxShadow = `0 4px 16px ${currentColorTheme.primary ? currentColorTheme.primary + '20' : 'rgba(140,109,79,0.1)'}`; }} 
-                onMouseOut={e => { e.target.style.borderColor = currentColorTheme.primary || "#C8B9A8"; e.target.style.transform = "translateY(0) scale(1)"; e.target.style.boxShadow = "none"; }}>
+                onMouseOver={e => { e.target.style.borderColor = currentColorTheme.primary || "#8C6D4F"; e.target.style.transform = "translateY(-3px)"; }} 
+                onMouseOut={e => { e.target.style.borderColor = currentColorTheme.primary || "#C8B9A8"; e.target.style.transform = "translateY(0)"; }}>
                 Get in Touch
               </button>
             </div>
@@ -895,7 +830,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* ABOUT / EDUCATION */}
+      {/* ABOUT */}
       <section id="about" style={{ maxWidth: 1100, margin: "0 auto", padding: "80px 24px", position: 'relative', zIndex: 1 }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }}>
           <div>
@@ -953,7 +888,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* EXPERIENCE SECTION */}
+      {/* EXPERIENCE */}
       <section id="experience" style={{ background: "rgba(248,245,240,0.9)", padding: "80px 24px", position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <span className="section-label">Experience</span>
@@ -964,39 +899,35 @@ export default function Portfolio() {
               const IconComponent = Icons[exp.icon.charAt(0).toUpperCase() + exp.icon.slice(1)];
               return (
                 <div key={exp.title} className="card" style={{ padding: 32, borderLeft: `4px solid ${exp.color}` }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 20, alignItems: "start" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
+                    <span style={{ display: 'flex', alignItems: 'center', color: exp.color }}>
+                      {IconComponent ? <IconComponent /> : <span>💼</span>}
+                    </span>
                     <div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
-                        <span style={{ display: 'flex', alignItems: 'center', color: exp.color }}>
-                          {IconComponent ? <IconComponent /> : <span>💼</span>}
-                        </span>
-                        <div>
-                          <span className="sans" style={{ fontSize: 11, color: "#9C8878", textTransform: "uppercase", letterSpacing: "1px" }}>
-                            {exp.period}
-                          </span>
-                          <h3 className="serif" style={{ fontSize: 24, fontWeight: 600, lineHeight: 1.2 }}>
-                            {exp.title}
-                          </h3>
-                        </div>
-                      </div>
-                      <p className="sans" style={{ fontSize: 16, color: exp.color, fontWeight: 600, marginBottom: 4 }}>
-                        {exp.company}
-                      </p>
-                      <p className="sans" style={{ fontSize: 13, color: "#9C8878", marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <Icons.Location /> {exp.location}
-                      </p>
-                      <p className="sans" style={{ fontSize: 12, color: "#6B5E52", fontWeight: 500, letterSpacing: "0.5px", marginBottom: 14 }}>
-                        Stack: {exp.stack}
-                      </p>
-                      <ul style={{ paddingLeft: 0, listStyle: "none" }}>
-                        {exp.description.map((item) => (
-                          <li key={item} className="sans" style={{ fontSize: 14, color: "#5C4F42", lineHeight: 1.7, marginBottom: 6, display: "flex", gap: 10, alignItems: "flex-start" }}>
-                            <span style={{ color: exp.color, marginTop: 6, flexShrink: 0 }}>▸</span>{item}
-                          </li>
-                        ))}
-                      </ul>
+                      <span className="sans" style={{ fontSize: 11, color: "#9C8878", textTransform: "uppercase", letterSpacing: "1px" }}>
+                        {exp.period}
+                      </span>
+                      <h3 className="serif" style={{ fontSize: 24, fontWeight: 600, lineHeight: 1.2 }}>
+                        {exp.title}
+                      </h3>
                     </div>
                   </div>
+                  <p className="sans" style={{ fontSize: 16, color: exp.color, fontWeight: 600, marginBottom: 4 }}>
+                    {exp.company}
+                  </p>
+                  <p className="sans" style={{ fontSize: 13, color: "#9C8878", marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Icons.Location /> {exp.location}
+                  </p>
+                  <p className="sans" style={{ fontSize: 12, color: "#6B5E52", fontWeight: 500, letterSpacing: "0.5px", marginBottom: 14 }}>
+                    Stack: {exp.stack}
+                  </p>
+                  <ul style={{ paddingLeft: 0, listStyle: "none" }}>
+                    {exp.description.map((item) => (
+                      <li key={item} className="sans" style={{ fontSize: 14, color: "#5C4F42", lineHeight: 1.7, marginBottom: 6, display: "flex", gap: 10, alignItems: "flex-start" }}>
+                        <span style={{ color: exp.color, marginTop: 6, flexShrink: 0 }}>▸</span>{item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               );
             })}
@@ -1076,8 +1007,8 @@ export default function Portfolio() {
                         fontWeight: 500, 
                         transition: "all 0.3s ease" 
                       }}
-                      onMouseOver={e => { e.target.style.transform = "translateY(-2px) scale(1.02)"; e.target.style.boxShadow = `0 4px 12px ${p.color}60`; }}
-                      onMouseOut={e => { e.target.style.transform = "translateY(0) scale(1)"; e.target.style.boxShadow = "none"; }}>
+                      onMouseOver={e => e.target.style.transform = "translateY(-2px)"}
+                      onMouseOut={e => e.target.style.transform = "translateY(0)"}>
                       GitHub →
                     </button>
                   </a>
@@ -1136,14 +1067,8 @@ export default function Portfolio() {
                 gap: 10,
                 transition: "all 0.3s ease"
               }}
-              onMouseOver={e => {
-                e.target.style.transform = "translateY(-3px) scale(1.02)";
-                e.target.style.boxShadow = `0 8px 24px ${currentColorTheme.primary ? currentColorTheme.primary + '50' : 'rgba(140,109,79,0.3)'}`;
-              }}
-              onMouseOut={e => {
-                e.target.style.transform = "translateY(0) scale(1)";
-                e.target.style.boxShadow = "none";
-              }}>
+              onMouseOver={e => e.target.style.transform = "translateY(-3px)"}
+              onMouseOut={e => e.target.style.transform = "translateY(0)"}>
               <span>🔗</span>
               View All Projects on GitHub
               <span>→</span>
@@ -1155,7 +1080,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* ACHIEVEMENTS - Updated with SVG Icons */}
+      {/* ACHIEVEMENTS */}
       <section id="achievements" style={{ background: "rgba(237,232,226,0.9)", padding: "80px 24px", position: 'relative', zIndex: 1 }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <span className="section-label">Highlights</span>
@@ -1177,7 +1102,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* CONTACT - Updated with SVG icons */}
+      {/* CONTACT */}
       <section id="contact" style={{ maxWidth: 1100, margin: "0 auto", padding: "80px 24px", position: 'relative', zIndex: 1 }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "start" }}>
           <div>
@@ -1204,16 +1129,9 @@ export default function Portfolio() {
                   alignItems: "center",
                   gap: 12,
                   transition: "all 0.3s ease",
-                  boxShadow: `0 4px 16px ${currentColorTheme.primary ? currentColorTheme.primary + '40' : 'rgba(140,109,79,0.25)'}`
                 }}
-                onMouseOver={e => {
-                  e.target.style.transform = "translateY(-3px) scale(1.02)";
-                  e.target.style.boxShadow = `0 8px 28px ${currentColorTheme.primary ? currentColorTheme.primary + '50' : 'rgba(140,109,79,0.35)'}`;
-                }}
-                onMouseOut={e => {
-                  e.target.style.transform = "translateY(0) scale(1)";
-                  e.target.style.boxShadow = `0 4px 16px ${currentColorTheme.primary ? currentColorTheme.primary + '40' : 'rgba(140,109,79,0.25)'}`;
-                }}
+                onMouseOver={e => e.target.style.transform = "translateY(-3px)"}
+                onMouseOut={e => e.target.style.transform = "translateY(0)"}
               >
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <Icons.Resume />
